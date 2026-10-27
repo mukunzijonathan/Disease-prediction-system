@@ -1,7 +1,21 @@
 """
-Seed demo data for live competition presentations.
-Creates demo_patient / demo123, demo_provider / demo123, and 10 sample predictions for the patient.
-Run from backend/: python ml_models/seed_demo_data.py
+Seed demo data for local / presentation use.
+
+Creates demo patient and provider accounts plus sample predictions.
+Passwords are read from the environment (never hardcode secrets in the repo).
+
+Required env vars (from backend/.env or the shell):
+  DEMO_PATIENT_PASSWORD
+  DEMO_PROVIDER_PASSWORD
+
+Optional:
+  DEMO_PATIENT_USERNAME   (default: demo_patient)
+  DEMO_PROVIDER_USERNAME  (default: demo_provider)
+  DEMO_PATIENT_EMAIL      (default: demo_patient@example.com)
+  DEMO_PROVIDER_EMAIL     (default: demo_provider@example.com)
+
+Run from backend/:
+  python ml_models/seed_demo_data.py
 """
 import os
 import random
@@ -79,33 +93,51 @@ def random_features(disease):
     return features
 
 
+def _require_env(name):
+    value = os.environ.get(name, "").strip()
+    if not value:
+        print(
+            f"Missing required environment variable: {name}\n"
+            "Set DEMO_PATIENT_PASSWORD and DEMO_PROVIDER_PASSWORD before running."
+        )
+        sys.exit(1)
+    return value
+
+
 def main():
     print("Seeding demo data...")
 
+    patient_password = _require_env("DEMO_PATIENT_PASSWORD")
+    provider_password = _require_env("DEMO_PROVIDER_PASSWORD")
+    patient_username = os.environ.get("DEMO_PATIENT_USERNAME", "demo_patient").strip() or "demo_patient"
+    provider_username = os.environ.get("DEMO_PROVIDER_USERNAME", "demo_provider").strip() or "demo_provider"
+    patient_email = os.environ.get("DEMO_PATIENT_EMAIL", "demo_patient@example.com").strip()
+    provider_email = os.environ.get("DEMO_PROVIDER_EMAIL", "demo_provider@example.com").strip()
+
     # 1. Create or get demo users
     patient_user, _ = User.objects.get_or_create(
-        username="demo_patient",
+        username=patient_username,
         defaults={
-            "email": "demo_patient@demo.test",
+            "email": patient_email,
             "role": User.Role.PATIENT,
             "full_name": "Demo Patient",
         },
     )
-    patient_user.set_password("demo123")
+    patient_user.set_password(patient_password)
     patient_user.save()
-    print("  Demo patient: demo_patient / demo123")
+    print(f"  Demo patient username: {patient_username}")
 
     provider_user, _ = User.objects.get_or_create(
-        username="demo_provider",
+        username=provider_username,
         defaults={
-            "email": "demo_provider@demo.test",
+            "email": provider_email,
             "role": User.Role.PROVIDER,
             "full_name": "Demo Provider",
         },
     )
-    provider_user.set_password("demo123")
+    provider_user.set_password(provider_password)
     provider_user.save()
-    print("  Demo provider: demo_provider / demo123")
+    print(f"  Demo provider username: {provider_username}")
 
     # 2. Ensure patient profile exists
     patient, _ = Patient.objects.get_or_create(user=patient_user)
@@ -154,13 +186,14 @@ def main():
 
     print(f"  Created {created} sample predictions for demo patient.")
 
-    # 6. Print patient code for demos
+    # 6. Print patient code for demos (do not print passwords)
     print()
     print("=" * 50)
     print("DEMO PATIENT CODE (for provider search):", patient.id)
     print("=" * 50)
-    print("  Login as patient:  demo_patient / demo123")
-    print("  Login as provider: demo_provider / demo123")
+    print(f"  Patient username:  {patient_username}")
+    print(f"  Provider username: {provider_username}")
+    print("  Passwords: use the DEMO_*_PASSWORD values you set in the environment.")
     print()
 
 

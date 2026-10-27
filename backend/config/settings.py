@@ -14,9 +14,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -----------------------------------------------------------------------------
 # Security & Debug
 # -----------------------------------------------------------------------------
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-fallback-key")
-DEBUG = os.environ.get("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
+# Prefer DJANGO_SECRET_KEY (see .env.example); SECRET_KEY kept for older deploys.
+SECRET_KEY = (
+    os.environ.get("DJANGO_SECRET_KEY")
+    or os.environ.get("SECRET_KEY")
+    or "change-me-in-development-only"
+)
+DEBUG = (
+    os.environ.get("DJANGO_DEBUG", os.environ.get("DEBUG", "False")).lower()
+    in ("1", "true", "yes")
+)
+ALLOWED_HOSTS = os.environ.get(
+    "DJANGO_ALLOWED_HOSTS",
+    os.environ.get("ALLOWED_HOSTS", "localhost"),
+).split(",")
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     "CSRF_TRUSTED_ORIGINS",
     "http://localhost:3000,http://127.0.0.1:3000",

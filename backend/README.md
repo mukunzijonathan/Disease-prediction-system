@@ -51,13 +51,13 @@ backend/
    ```
 
 2. **Environment**  
-   Copy `.env.example` to `.env` and set `POSTGRES_*` and `DJANGO_SECRET_KEY`.
+   Copy `.env.example` to `.env` and set real `POSTGRES_*` values plus a unique `DJANGO_SECRET_KEY`. Never commit `.env`.
 
 3. **Database**  
    Create `disease_prediction_db` in PostgreSQL (e.g. pgAdmin), then:
    ```bash
    python manage.py migrate
-   python manage.py createsuperuser
+   python manage.py createsuperuser   # interactive prompt; do not hardcode credentials in docs
    ```
 
 4. **ML models**  

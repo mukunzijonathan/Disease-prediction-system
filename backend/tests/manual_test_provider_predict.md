@@ -7,19 +7,15 @@ get patient_id from Patient Dashboard, submit prediction, check success and erro
 
 ## 1. Log in as a provider
 
-- Open the app (e.g. http://localhost:5173) and go to **Login**.
-- Use demo provider credentials:
-  - **Email/username:** `demo_provider`
-  - **Password:** `demo123`
+- Open the app (e.g. http://localhost:3000) and go to **Login**.
+- Sign in with a **Healthcare Provider** account you created via **Register**, Django admin, or the demo seed script (`python ml_models/seed_demo_data.py` with `DEMO_*` env vars set — see that script’s header).
 - Submit; you should land on the Provider Dashboard.
-
-(If the demo user does not exist, create a user with role **Healthcare Provider** via Register or Django admin.)
 
 ---
 
 ## 2. Get a valid patient_id (patient code)
 
-- In another browser (or incognito), log in as a **patient** (e.g. `demo_patient` / `demo123`).
+- In another browser (or incognito), log in as a **patient**.
 - Go to **Patient Dashboard**.
 - Find the **Patient code** (sometimes labeled “Share with your doctor” or similar). This is the **patient_id** (e.g. a number like `5`).
 - Copy that value — you will use it in step 3 as `patient_id`.
