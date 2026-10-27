@@ -28,13 +28,13 @@ copy .env.example .env          # Windows
 # cp .env.example .env          # macOS/Linux
 ```
 
-Edit `.env`: set `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_PORT`, and `DJANGO_SECRET_KEY`.
+Edit `.env`: set `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, `POSTGRES_PORT`, and a unique `DJANGO_SECRET_KEY`. Do not reuse example placeholders in shared or production environments.
 
 Create the database in PostgreSQL (e.g. pgAdmin), then:
 
 ```bash
 python manage.py migrate
-python manage.py createsuperuser
+python manage.py createsuperuser   # prompts interactively — do not put the password in git
 ```
 
 ### (Optional) Train heart model and get heart.pkl

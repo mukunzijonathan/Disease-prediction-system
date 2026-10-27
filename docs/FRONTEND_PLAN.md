@@ -66,8 +66,8 @@ Base URL: `http://127.0.0.1:8000` (dev). All API requests must send **credential
 {
   "username": "johndoe",
   "email": "john@example.com",
-  "password": "securepass123",
-  "confirm_password": "securepass123",
+  "password": "<your-password>",
+  "confirm_password": "<your-password>",
   "role": "patient",
   "full_name": "John Doe",
   "phone": "+15550000000",
@@ -81,8 +81,8 @@ Base URL: `http://127.0.0.1:8000` (dev). All API requests must send **credential
 {
   "username": "drjane",
   "email": "jane@clinic.com",
-  "password": "securepass123",
-  "confirm_password": "securepass123",
+  "password": "<your-password>",
+  "confirm_password": "<your-password>",
   "role": "provider",
   "full_name": "Jane Smith",
   "phone": "+15550000001",

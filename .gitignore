@@ -8,9 +8,14 @@ __pycache__/
 *.pyc
 db.sqlite3
 
-# Environment
+# Environment / secrets
 .env
+.env.*
+!.env.example
+**/.env
+**/.env.local
 venv/
+.venv/
 .env.local
 
 # Build
