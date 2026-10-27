@@ -1,13 +1,13 @@
 # MedPredict — Disease Risk Prediction System
 
-Full-stack app that estimates risk for **heart disease**, **hypertension**, **stroke**, and **diabetes** using trained scikit-learn models, with role-based access for patients, providers, and admins.
+MedPredict estimates clinical risk for **heart disease**, **hypertension**, **stroke**, and **diabetes** using trained machine-learning models. Patients can run predictions and review history; providers can look up a patient and support clinical workflows; admins manage users and system overview.
 
 ## Stack
 
 | Layer | Tech |
 |-------|------|
-| Frontend | React 18, Vite, Tailwind CSS, Axios (session + CSRF) |
-| Backend | Django 5, Django REST Framework, PostgreSQL (SQLite OK for local) |
+| Frontend | React 18, Vite, Tailwind CSS, Axios |
+| Backend | Django 5, Django REST Framework, PostgreSQL |
 | ML | scikit-learn / joblib pipelines (`.pkl` under `backend/ml_models/`) |
 
 ## Project layout
@@ -17,14 +17,14 @@ Full-stack app that estimates risk for **heart disease**, **hypertension**, **st
 ├── backend/               # Django API (port 8000)
 │   ├── apps/              # accounts, patients, predictions, …
 │   └── ml_models/         # Training scripts + model artifacts
-├── medical-ml-system/     # Notebooks / earlier ML experiments
-├── docs/                  # Frontend planning notes
-└── HOW_TO_RUN.md          # Detailed local setup
+├── medical-ml-system/     # Notebooks and ML experiments
+├── docs/                  # Additional documentation
+└── HOW_TO_RUN.md          # Detailed local setup guide
 ```
 
 ## Quick start
 
-See **[HOW_TO_RUN.md](./HOW_TO_RUN.md)** for full steps. Summary:
+Full instructions are in **[HOW_TO_RUN.md](./HOW_TO_RUN.md)**. Summary:
 
 ```bash
 # Backend
@@ -32,9 +32,9 @@ cd backend
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env               # set DJANGO_SECRET_KEY and DB values
+cp .env.example .env               # configure secret key and database
 python manage.py migrate
-python manage.py createsuperuser   # interactive; do not commit credentials
+python manage.py createsuperuser
 python manage.py runserver
 
 # Frontend (separate terminal)
@@ -44,27 +44,24 @@ npm install
 npm run dev
 ```
 
-- App: http://localhost:3000  
-- API: http://127.0.0.1:8000  
-- Django admin: http://127.0.0.1:8000/admin/
+| Service | URL |
+|---------|-----|
+| App | http://localhost:3000 |
+| API | http://127.0.0.1:8000 |
+| Django admin | http://127.0.0.1:8000/admin/ |
 
-Assign the `admin` role in Django admin (or via the shell) if you need the in-app Admin Dashboard at `/admin-dashboard`.
+To use the in-app Admin Dashboard (`/admin-dashboard`), assign the `admin` role to a user in Django admin.
 
 ## Roles
 
-- **Patient** — run predictions, view personal history  
-- **Provider** — look up a patient by ID and run / review predictions  
-- **Admin** — user and system overview via `/admin-dashboard`
+| Role | Capabilities |
+|------|----------------|
+| Patient | Run predictions and view personal history |
+| Provider | Look up a patient by ID; run and review predictions |
+| Admin | User and system overview via `/admin-dashboard` |
 
-## Security notes
-
-- Never commit `.env` files or real passwords. Use `.env.example` as a template only.
-- Create accounts with `createsuperuser` / Register — do not hardcode credentials in docs or scripts.
-- Demo seed data (`python ml_models/seed_demo_data.py`) reads passwords from environment variables; see that script’s header for required vars.
-- Rotate any credentials that were previously committed in this repository.
-
-## Docs
+## Documentation
 
 - [HOW_TO_RUN.md](./HOW_TO_RUN.md) — setup, run, Docker, troubleshooting  
-- [backend/README.md](./backend/README.md) — API overview and env vars  
+- [backend/README.md](./backend/README.md) — API overview and environment variables  
 - [frontend/README.md](./frontend/README.md) — frontend setup  
